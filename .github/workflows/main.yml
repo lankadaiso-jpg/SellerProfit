@@ -36,11 +36,12 @@ jobs:
           if [ ! -d android ]; then
             flutter create --platforms=android .
           fi
-          if [ -f android/app/build.gradle.kts ]; then
-            sed -i 's/flutter.compileSdkVersion/36/' android/app/build.gradle.kts
-          elif [ -f android/app/build.gradle ]; then
-            sed -i 's/flutter.compileSdkVersion/36/' android/app/build.gradle
-          fi
+          find . -path '*/build.gradle' -o -path '*/build.gradle.kts' | while read file; do
+            sed -i 's/flutter.compileSdkVersion/36/g' "$file"
+            sed -i 's/compileSdkVersion 34/compileSdkVersion 36/g' "$file"
+            sed -i 's/compileSdk = 34/compileSdk = 36/g' "$file"
+          done
+          grep -R "compileSdk" android
 
       - name: Install packages
         working-directory: SellerProfit
