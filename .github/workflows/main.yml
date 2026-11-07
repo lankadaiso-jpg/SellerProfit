@@ -43,7 +43,7 @@ jobs:
 
       - name: Run tests
         working-directory: SellerProfit
-        run: run: flutter test test/profit_calculator_test.dart
+        run: flutter test test/profit_calculator_test.dart
       - name: Build APK
         working-directory: SellerProfit
         run: flutter build apk --release
