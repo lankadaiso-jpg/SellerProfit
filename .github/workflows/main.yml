@@ -47,9 +47,17 @@ jobs:
         working-directory: SellerProfit
         run: flutter pub get
 
+      - name: Set plugin Android API level
+        working-directory: SellerProfit
+        run: |
+          find "$HOME/.pub-cache" -type f \( -name build.gradle -o -name build.gradle.kts \) -print0 | xargs -0 -r sed -i -E 's/flutter\.compileSdkVersion/36/g; s/compileSdkVersion[[:space:]]+34/compileSdkVersion 36/g; s/compileSdk[[:space:]]*=[[:space:]]*34/compileSdk = 36/g; s/compileSdk[[:space:]]+34/compileSdk 36/g'
+          echo "Checking file_picker Android compile SDK:"
+          grep -R "compileSdk" "$HOME/.pub-cache/hosted/pub.dev/file_picker-"*/android 2>/dev/null || true
+
       - name: Run tests
         working-directory: SellerProfit
         run: flutter test test/profit_calculator_test.dart
+
       - name: Build APK
         working-directory: SellerProfit
         run: flutter build apk --release
